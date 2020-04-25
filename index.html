@@ -6,7 +6,17 @@
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div class="video-container">
+    <h1 id="status">Initializing camera access...</h1>
+
+    <div class="troubleshooting-container" id="troubleshooting" style="display: none;">
+      <p>What browser do you have?</p>
+
+      <a href="chrome-troubleshooting.html">Chrome</a><br>
+      <a href="firefox-troubleshooting.html">Firefox</a>
+
+    </div>
+
+    <div class="video-container" id="videoContainer">
       <video autoplay="true" id="videoElement">
       </video>
     </div>
@@ -24,6 +34,12 @@
           })
           .catch(function(error) {
             window.alert("Couldn't activate camera. Please make sure to grant permissions, and then refresh the page.");
+            var status = document.getElementById("status")
+            status.innerHTML = "Error - failed to access camera device";
+            var troubleshooting = document.getElementById("troubleshooting")
+            troubleshooting.style = "display: inline-block;";
+            var videoContainer = document.getElementById("videoContainer")
+            videoContainer.style = "display: none;";
           });
       }
     </script>
