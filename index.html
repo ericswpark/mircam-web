@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>mircam</title>
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <h1 id="status">Initializing camera access...</h1>
 
-    <div class="troubleshooting-container" id="troubleshooting" style="display: none;">
-      <p>What browser do you have?</p>
+<head>
+  <meta charset="UTF-8">
+  <title>mircam</title>
+  <link rel="stylesheet" href="index.css">
+</head>
 
-      <a href="chrome-troubleshooting.html">Chrome</a><br>
-      <a href="firefox-troubleshooting.html">Firefox</a><br>
-      <a href="safari-troubleshooting.html">Safari</a>
+<body>
+  <h1 id="statusHeader">Initializing camera access...</h1>
 
-    </div>
+  <div class="troubleshooting-container" id="troubleshooting" style="display: none;">
+    <p>What browser do you have?</p>
 
-    <div class="video-container" id="videoContainer">
-      <video autoplay="true" id="videoElement">
-      </video>
-    </div>
+    <a href="chrome-troubleshooting.html">Chrome</a><br>
+    <a href="firefox-troubleshooting.html">Firefox</a><br>
+    <a href="safari-troubleshooting.html">Safari</a>
 
-    <script>
-      var video = document.querySelector("#videoElement");
+  </div>
 
-      if (navigator.mediaDevices.getUserMedia) {
+  <div class="edge-browser-container" id="edgeBrowser" style="display: none;">
+    <p>On old versions of Microsoft Edge, there is an incompatibility where the image from the webcam will be flipped in various degrees.</p>
+    <p>A Microsoft representative has <a href="https://answers.microsoft.com/en-us/msoffice/forum/all/teams-webcam-displaying-sideways-on-desktop/e5b91504-783b-40c0-b309-a882a1d6973f">confirmed this issue.</a></p>
+
+    <p>Please use either Chrome, Firefox, or Safari. Or upgrade your Microsoft Edge browser to the new beta version that uses Chromium as the backend.</p>
+
+    <p>If you wish to use the beta version of Microsoft Edge (NOT recommended) you <a href="https://www.microsoft.com/en-us/edge/?form=MY01BL&OCID=MY01BL">can download it here.</a></p>
+  </div>
+
+  <div class="video-container" id="videoContainer">
+    <video autoplay="true" id="videoElement">
+    </video>
+  </div>
+
+  <script>
+    var stopExecution = false;
+    var edgeBrowser = false;
+    var statusHeader = document.getElementById("statusHeader")
+    var video = document.querySelector("#videoElement");
+    var videoContainer = document.getElementById("videoContainer");
+    var troubleshooting = document.getElementById("troubleshooting");
+    var edgeBrowserContainer = document.getElementById("edgeBrowser");
+
+    // Remove videoContainer
+    function removeVideo() {
+      // Remove overlay (otherwise it will catch mouse clicks)
+      videoContainer.style = "display: none;";
+    }
+
+    // Camera start
+    function cameraStart() {
+      if(navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
             video: true
           })
@@ -35,14 +60,40 @@
           })
           .catch(function(error) {
             window.alert("Couldn't activate camera. Please make sure to grant permissions, and then refresh the page.");
-            var status = document.getElementById("status")
-            status.innerHTML = "Error - failed to access camera device";
-            var troubleshooting = document.getElementById("troubleshooting")
+            statusHeader.innerHTML = "Error - failed to access camera device";
+
+            // Show debugger
             troubleshooting.style = "display: inline-block;";
-            var videoContainer = document.getElementById("videoContainer")
-            videoContainer.style = "display: none;";
+            removeVideo();
           });
       }
-    </script>
-  </body>
+    }
+
+    // Spoof edge
+    function spoofEdge() {
+      stopExecution = true;
+      edgeBrowser = true;
+    }
+
+    // spoofEdge();
+
+    // Detect Edge browser
+    if (/Edge/.test(navigator.userAgent) || edgeBrowser) {
+      stopExecution = !window.confirm("Warning - Edge browser detected. Are you sure you want to continue? (Click Cancel for more information.)");
+      edgeBrowser = true;
+    }
+
+    // Main
+    if (stopExecution) {
+      if (edgeBrowser) {
+        statusHeader.innerHTML = "Microsoft Edge is unsupported";
+        edgeBrowserContainer.style = "display: inline-block;";
+      }
+      removeVideo();
+    } else {
+      cameraStart();
+    }
+  </script>
+</body>
+
 </html>
