@@ -38,7 +38,7 @@
   </div>
 
   <div class="video-container" id="videoContainer">
-    <video autoplay="true" id="videoElement" playsinline>
+    <video id="videoElement" playsinline autoplay muted>
     </video>
   </div>
 
@@ -63,7 +63,8 @@
     function cameraStart() {
       if(navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
-            video: true
+            video: true,
+            audio: false
           })
           .then(function(stream) {
             video.srcObject = stream;
