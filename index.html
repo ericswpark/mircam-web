@@ -55,6 +55,9 @@
           .then(function(stream) {
             video.srcObject = stream;
             video.play();
+
+            // Clear text
+            statusHeader.innerHTML = "";
           })
           .catch(function(error) {
             window.alert("Couldn't activate camera. Please make sure to grant permissions, and then refresh the page.");
