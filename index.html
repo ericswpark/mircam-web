@@ -13,28 +13,13 @@
   <div class="troubleshooting-container" id="troubleshooting" style="display: none;">
     <p>What browser do you have?</p>
 
-    <a href="troubleshooting/chrome.html">Chrome</a><br>
     <a href="troubleshooting/firefox.html">Firefox</a><br>
+    <a href="troubleshooting/chrome.html">Chrome (or Chromium-based)</a><br>
     <a href="troubleshooting/safari.html">Safari</a>
 
-    <p>mircam-web works on the latest versions of Chrome, Firefox, and Safari.</p>
-
-    <p>Microsoft Edge is not supported - <a href="#" onclick="edgeDisplay()">click here for more information.</a></p>
+    <p>mircam-web works on the latest versions of Firefox, Chrome, Chromium-based browsers like Brave and Microsoft Edge, and Safari.</p>
     
     <p>On some laptops, there may be a software-based killswitch that deactivates the webcam. If you keep getting this error, please try disabling such killswitches and see if it fixes the problem.</p>
-  </div>
-
-  <div class="edge-browser-container" id="edgeBrowser" style="display: none;">
-    <p>On old versions of Microsoft Edge, there is an incompatibility where the image from the webcam will be flipped in various degrees.</p>
-    <p>A Microsoft representative has <a href="https://answers.microsoft.com/en-us/msoffice/forum/all/teams-webcam-displaying-sideways-on-desktop/e5b91504-783b-40c0-b309-a882a1d6973f">confirmed this issue.</a></p>
-
-    <p>Please use either Chrome, Firefox, or Safari. Or upgrade your Microsoft Edge browser to the new beta version that uses Chromium as the backend.</p>
-
-    <p>If you wish to use the beta version of Microsoft Edge (NOT recommended) you <a href="https://www.microsoft.com/en-us/edge/?form=MY01BL&OCID=MY01BL">can download it here.</a></p>
-
-    <div id="notEdgeGoBack" style="display: none;">
-      <a href="javascript:history.go(0)"><- Return to previous menu</a>
-    </div>
   </div>
 
   <div class="video-container" id="videoContainer">
@@ -49,15 +34,10 @@
   </script>
 
   <script>
-    var stopExecution = false;
-    var edgeBrowser = false;
     var statusHeader = document.getElementById("statusHeader")
     var video = document.querySelector("#videoElement");
     var videoContainer = document.getElementById("videoContainer");
     var troubleshooting = document.getElementById("troubleshooting");
-    var edgeBrowserContainer = document.getElementById("edgeBrowser");
-    var edgeOtherBrowserButton = document.getElementById("notEdgeGoBack");
-    var edgeInformationViewOnOtherBrowser = false;
 
     // Remove videoContainer
     function removeVideo() {
@@ -87,42 +67,9 @@
       }
     }
 
-    // Show more information about Microsoft Edge incompatibility
-    function edgeDisplay() {
-      spoofEdge();
-      edgeInformationViewOnOtherBrowser = true;
-      main();
-    }
-
-    // Spoof edge
-    function spoofEdge() {
-      stopExecution = true;
-      edgeBrowser = true;
-    }
-
-    // spoofEdge();
-
-    // Detect Edge browser
-    if (/Edge/.test(navigator.userAgent) || edgeBrowser) {
-      stopExecution = !window.confirm("Warning - Edge browser detected. Are you sure you want to continue? (Click Cancel for more information.)");
-      edgeBrowser = true;
-    }
-
     // Main
     function main() {
-      if (stopExecution) {
-        if (edgeBrowser) {
-          statusHeader.innerHTML = "Microsoft Edge is unsupported";
-          edgeBrowserContainer.style = "display: inline-block;";
-          troubleshooting.style = "display: none;";
-          if(edgeInformationViewOnOtherBrowser) {
-            edgeOtherBrowserButton.style = "display: inline-block;";
-          }
-        }
-        removeVideo();
-      } else {
-        cameraStart();
-      }
+      cameraStart();
     }
 
     // Start main()
