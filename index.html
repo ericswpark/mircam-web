@@ -11,6 +11,14 @@
   <h1 id="statusHeader">Initializing camera access...</h1>
 
   <div class="troubleshooting-container" id="troubleshooting" style="display: none;">
+    <p>Check the following:</p>
+
+    <ol>
+      <li><strong>Do you have any other apps/programs that are using the camera?</strong> Turn them off, and refresh the page.</li>
+      <li><strong>Does your laptop have a "killswitch" that turns off the camera?</strong> Disable the killswitch, and refresh the page.</li>
+      <li><strong>Did you accidentally deny the camera permission (or you never recall seeing one)?</strong> Follow the instructions below.</li>
+    </ol>
+
     <p>What browser do you have?</p>
 
     <a href="troubleshooting/firefox.html">Firefox</a><br>
@@ -18,8 +26,6 @@
     <a href="troubleshooting/safari.html">Safari</a>
 
     <p>mircam-web works on the latest versions of Firefox, Chrome, Chromium-based browsers like Brave and Microsoft Edge, and Safari.</p>
-    
-    <p>On some laptops, there may be a software-based killswitch that deactivates the webcam. If you keep getting this error, please try disabling such killswitches and see if it fixes the problem.</p>
   </div>
 
   <div class="video-container" id="videoContainer">
@@ -60,10 +66,7 @@
             statusHeader.innerHTML = "";
           })
           .catch(function(error) {
-            window.alert("Couldn't activate camera. Please make sure to grant permissions, and then refresh the page.");
             statusHeader.innerHTML = "Error - failed to access camera device";
-
-            // Show debugger
             troubleshooting.style = "display: inline-block;";
             removeVideo();
           });
